@@ -4,22 +4,13 @@ from operator import mul
 
 def part_one(lines):
     matrix = [list(line) for line in lines]
-    m = len(matrix)
     parts = []
 
     for i, line in enumerate(lines):
         for match in re.finditer(r"[^\d.]", line):
-            adjacent_numbers = set()
-
-            cells = get_adjacent_cells(i, match.start(), m, len(line))
-
-            for row, column in cells:
-                value = matrix[row][column]
-
-                if value.isdigit():
-                    adjacent_numbers.add(
-                        get_adjacent_number(row, column, matrix[row])
-                    )
+            adjacent_numbers = get_all_adjacent_numbers(
+                i, match.start(), matrix
+            )
 
             parts.extend(adjacent_numbers)
 
@@ -29,21 +20,12 @@ def part_one(lines):
 def part_two(lines):
     answer = 0
     matrix = [list(line) for line in lines]
-    m = len(matrix)
 
     for i, line in enumerate(lines):
         for match in re.finditer(r"[\*]", line):
-            adjacent_numbers = set()
-
-            cells = get_adjacent_cells(i, match.start(), m, len(line))
-
-            for row, column in cells:
-                value = matrix[row][column]
-
-                if value.isdigit():
-                    adjacent_numbers.add(
-                        get_adjacent_number(row, column, matrix[row])
-                    )
+            adjacent_numbers = get_all_adjacent_numbers(
+                i, match.start(), matrix
+            )
 
             if len(adjacent_numbers) == 2:
                 answer += mul(*adjacent_numbers)
@@ -51,34 +33,49 @@ def part_two(lines):
     return answer
 
 
-def get_adjacent_cells(r, c, m, n):
+def get_all_adjacent_numbers(row, column, matrix):
+    adjacent_numbers = set()
+
+    cells = get_adjacent_cells(row, column, len(matrix), len(matrix[row]))
+
+    for row, column in cells:
+        value = matrix[row][column]
+
+        if value.isdigit():
+            adjacent_numbers.add(
+                get_number(row, column, matrix[row])
+            )
+
+    return adjacent_numbers
+
+
+def get_adjacent_cells(row, column, m, n):
     result = []
 
-    for x, y in [
-        (r + i, c + j)
-        for i in (-1, 0, 1)
-        for j in (-1, 0, 1)
-        if i != 0 or j != 0
+    for r, c in [
+        (row + dx, column + dy)
+        for dx in (-1, 0, 1)
+        for dy in (-1, 0, 1)
+        if dx != 0 or dy != 0
     ]:
-        if 0 <= x < m and 0 <= y < n:
-            result.append((x, y))
+        if 0 <= r < m and 0 <= c < n:
+            result.append((r, c))
 
     return result
 
 
-def get_adjacent_number(r, c, line):
-    n = len(line)
+def get_number(row, column, line):
     number = ''
 
     # Find the beginning of the number
-    for i in range(c, -1, -1):
+    for i in range(column, -1, -1):
         if line[i].isdigit():
             number = line[i] + number
         else:
             break
 
     # Find the end of the number
-    for i in range(c + 1, n):
+    for i in range(column + 1, len(line)):
         if line[i].isdigit():
             number = number + line[i]
         else:
