@@ -2,7 +2,7 @@ import re
 from operator import mul
 
 
-def part_one(lines):
+def part_one(lines, *args):
     matrix = [list(line) for line in lines]
     parts = []
 
@@ -17,7 +17,7 @@ def part_one(lines):
     return sum(parts)
 
 
-def part_two(lines):
+def part_two(lines, *args):
     answer = 0
     matrix = [list(line) for line in lines]
 

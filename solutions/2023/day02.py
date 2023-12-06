@@ -1,7 +1,7 @@
 import re
 
 
-def part_one(lines):
+def part_one(lines, *args):
     answer = 0
     colors = {
         "red": 12,
@@ -23,7 +23,7 @@ def part_one(lines):
     return answer
 
 
-def part_two(lines):
+def part_two(lines, *args):
     answer = 0
     colors = ["red", "green", "blue"]
 

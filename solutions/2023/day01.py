@@ -1,7 +1,7 @@
 import re
 
 
-def part_one(lines):
+def part_one(lines, *args):
     answer = 0
 
     for line in lines:
@@ -11,7 +11,7 @@ def part_one(lines):
     return answer
 
 
-def part_two(lines):
+def part_two(lines, *args):
     answer = 0
 
     numbers = {

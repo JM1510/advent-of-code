@@ -8,9 +8,10 @@ from importlib import import_module
 def run(func, filename="filename"):
     try:
         with open(filename) as f:
-            lines = [line for line in f.read().split("\n") if line]
+            content = f.read()
+            lines = [line for line in content.split("\n") if line]
             try:
-                print(func(lines))
+                print(func(lines, content))
             except Exception as e:
                 print(f"Error: {e}")
     except FileNotFoundError:
